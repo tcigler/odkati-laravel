@@ -26,9 +26,9 @@
       </template>
 <!--      <Column field="ean" header="EAN Code"></Column>-->
       <Column field="name" header="Název"></Column>
-      <Column field="price" header="Cena">
+      <Column field="price" header="Cena" class="text-right w-24"  >
           <template #body="slotProps">
-              {{ slotProps.data.price }},- Kč
+              <span class="text-right">{{ slotProps.data.price }},- Kč</span>
           </template>
       </Column>
 
