@@ -6,9 +6,8 @@ import Navbar from "@/Components/Navbar.vue";
 <template>
     <div class="container mx-auto px-4">
         <header>
-            Logo
+          <Navbar />
         </header>
-        <Navbar />
         <main>
             <slot />
         </main>

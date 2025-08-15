@@ -6,7 +6,7 @@ import { Head, Link } from '@inertiajs/vue3';
 
 <template>
     <div>
-        <Head title="Welcome" />
-        Hello
+        <Head title="Burza Luby 2025" />
+        Burza Luby 2025
     </div>
 </template>
