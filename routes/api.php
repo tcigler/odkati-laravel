@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\POS\ItemEanController;
+use App\Http\Controllers\POS\ItemsController;
+use App\Http\Controllers\POS\TransactionController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +13,16 @@ const ADMIN_PASS_HASH="$2y$12$2j.KBAwPP2GKHNm9wG4WNOUVkA6P2UfWRux8asgO9Kt.s8CSDC
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+Route::get("/items/find/{ean}", [ItemsController::class, 'find'])->name('items.find');
+Route::get("/items/get/{id}", [ItemsController::class, 'get'])->name('items.get');
+
+Route::get("/item-ean/{ean}", [ItemEanController::class, 'get'])->name('item-ean.get');
+Route::delete("/item-ean/destroy/{ean}", [ItemEanController::class, 'destroy'])->name('item-ean.destroy');
+
+Route::put("/transaction/{transaction_id}/add-item/{item_id}/{quantity}", [TransactionController::class, 'addItem'])->name('transaction-item.add');
+Route::put("/transaction-item/{tx_item_id}/update/{quantity}", [TransactionController::class, 'updateQuantity'])->name('transaction-item.update');
+Route::delete("/transaction-item/{tx_item_id}/destroy", [TransactionController::class, 'removeItem'])->name('transaction-item.destroy');
 
 Route::get('/db-init', function (Request $request) {
     $key = $request->get("key", "test");
