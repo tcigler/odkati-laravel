@@ -36,11 +36,11 @@ jobs:
           DB_MAIN_USER_PASS: ${{ secrets.DB_MAIN_USER_PASS }}
           DB_MAIN_ADMIN: ${{ secrets.DB_MAIN_ADMIN }}
           DB_MAIN_ADMIN_PASS: ${{ secrets.DB_MAIN_ADMIN_PASS }}
-          DB_MAIN_NAME: ${{ secrets.DB_MAIN_NAME }}
-          DB_MAIN_SERVER: ${{ secrets.DB_MAIN_SERVER }}
+          DB_MAIN_NAME: ${{ vars.DB_MAIN_NAME }}
+          DB_MAIN_SERVER: ${{ vars.DB_MAIN_SERVER }}
           DEBUG: ${{ inputs.DEBUG }}
           URL: ${{ vars.URL }}
-          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_USERNAME: ${{ vars.MAIL_USERNAME }}
           MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
 #          CKEDITOR_LICENSE_KEY: ${{ secrets.CKEDITOR_LICENSE_KEY }}
 
@@ -74,7 +74,7 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           # ftp server
-          server: ${{ secrets.FTP_SERVER }}
+          server: ${{ vars.FTP_SERVER }}
           # ftp username
           username: ${{ secrets.FTP_USER }}
           # ftp password
