@@ -22,7 +22,7 @@
       })
   }
 
-  const eanInput = ref();
+  const eanInput = ref(null);
 
   defineExpose({eanInput});
 

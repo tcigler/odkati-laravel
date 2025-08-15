@@ -16,10 +16,15 @@ const ean = ref("");
 
 
 const unknwonEan = ref("");
+const eanInput = ref(null);
 // const itemAssoc = array();
 
 // const items = props.transaction_items;
 const lastUpdatedItemId = ref(-1);
+
+const reverseItemArrayKey = (key) => {
+  return props.transaction_items.length - key - 1;
+}
 
 const totalPrice = computed(() => {
     let total = 0;
@@ -51,10 +56,11 @@ const addItem = () => {
         // router.get(route('items.edit', {item: eanResponse.data.item_id}));
     }).catch(eanError => {
         console.error(eanError);
-        unknwonEan.value = {...ean.value};
+        unknwonEan.value = ean.value;
+    }).finally(() => {
+        ean.value = "";
     })
 
-    ean.value = "";
 }
 
 const updateQuantity = (refArrayKey, txItemId, quantity) => {
@@ -68,11 +74,10 @@ const updateQuantity = (refArrayKey, txItemId, quantity) => {
 
 const removeItem = (refArrayKey, txItemId) => {
     axios.delete(route('transaction-item.destroy', [txItemId])).then(() => {
-        props.transaction_items.splice(refArrayKey, 1)
+        props.transaction_items.splice(refArrayKey, 1);
+        lastUpdatedItemId.value = -1;
     })
 }
-
-const eanInput = ref();
 
 onMounted(() => {
     eanInput.value.focus();
@@ -99,7 +104,7 @@ onMounted(() => {
             <strong class="text-orange-400 text-xl">Celková cena: {{ totalPrice }},- Kč</strong>
         </div>
 
-        <Message severity="error" v-if="unknwonEan || false">Položka nenalezena {{ unknwonEan }}</Message>
+        <Message severity="error" v-if="unknwonEan">Položka nenalezena <Link :href="route('items.create', {ean: unknwonEan})">{{ unknwonEan }}</Link></Message>
 
     <h1 class="text-xl">Položky</h1>
     <table class="w-full text-right rtl:text-right text-black dark:text-gray-400 table-auto">
@@ -113,12 +118,12 @@ onMounted(() => {
         </thead>
         <tbody>
         <template v-for="(item, key) in [...props.transaction_items].reverse()" :key="key">
-            <tr :class="(props.transaction_items.length - lastUpdatedItemId - 1) === key ? 'bg-green-100' : 'bg-white'" class="border-b dark:bg-gray-800 dark:border-gray-700" >
-                <td class="px-6 py-2 text-left">{{key}} {{ item.item_name }}</td>
+            <tr :class="(lastUpdatedItemId) === reverseItemArrayKey(key) ? 'bg-green-100' : 'bg-white'" class="border-b dark:bg-gray-800 dark:border-gray-700" >
+                <td class="px-6 py-2 text-left">{{ item.item_name }}</td>
                 <td class="px-6 py-2 flex flex-row justify-end">
     <!--                <Button icon="pi pi-minus"></Button> -->
-                    <input type="number" class="rounded mx-2 h-10" min="1" max="1000" @change="updateQuantity(key, item.id, item.quantity)" v-model="item.quantity" />
-                    <Button icon="pi pi-trash" size="small" severity="danger" @click.prevent="removeItem(key, item.id)"></Button>
+                    <input type="number" class="rounded mx-2 h-10" min="1" max="1000" @change="updateQuantity(reverseItemArrayKey(key), item.id, item.quantity)" v-model="item.quantity" />
+                    <Button icon="pi pi-trash" size="small" severity="danger" @click.prevent="removeItem(reverseItemArrayKey(key), item.id)"></Button>
                 </td>
                 <td class="px-6 py-2 text-gray-500">{{ item.price_per_unit }} Kč</td>
                 <td class="px-6 py-2 font-bold">{{ item.price_per_unit * item.quantity }} Kč</td>
