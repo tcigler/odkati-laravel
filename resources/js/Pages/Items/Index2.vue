@@ -26,7 +26,11 @@
       </template>
 <!--      <Column field="ean" header="EAN Code"></Column>-->
       <Column field="name" header="Název"></Column>
-      <Column field="price" header="Cena"></Column>
+      <Column field="price" header="Cena">
+          <template #body="slotProps">
+              {{ slotProps.data.price }},- Kč
+          </template>
+      </Column>
 
       <template #footer> Celkem {{ items ? items.length : 0 }} položek. </template>
     </DataTable>
