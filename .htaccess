@@ -2,7 +2,7 @@
     RewriteEngine On
     # Redirect to the public directory
     RewriteCond %{REQUEST_URI} !^/public/
-    RewriteRule ^(.*)$ /public/$1 [L,NC]
+    RewriteRule ^(.*)$ /subdom/test/public/$1 [L,NC]
 
     # Handle Laravel routing
     RewriteCond %{REQUEST_FILENAME} !-f
